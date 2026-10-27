@@ -1,0 +1,279 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ToDoList — Stay Focused</title>
+  <meta name="description" content="A beautiful task management dashboard for your daily productivity." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-shell">
+
+    <aside class="sidebar">
+      <a class="brand" href="#" aria-label="ToDoList home">
+        <span class="brand-icon">✓</span>
+        <span>ToDo<span class="brand-purple">List</span></span>
+      </a>
+
+      <nav class="navigation" aria-label="Main navigation">
+        <button class="nav-item active" data-view="home">
+          <span class="nav-icon">⌂</span><span>Home</span>
+        </button>
+        <button class="nav-item" data-view="all">
+          <span class="nav-icon">☷</span><span>All Tasks</span>
+        </button>
+        <button class="nav-item" data-view="today">
+          <span class="nav-icon">▦</span><span>Today</span>
+        </button>
+        <button class="nav-item" data-view="completed">
+          <span class="nav-icon">✓</span><span>Completed</span>
+        </button>
+        <button class="nav-item" data-view="settings">
+          <span class="nav-icon">⚙</span><span>Settings</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <div class="sidebar-sparkle">✳</div>
+        <p>Small steps<br />today, big results<br />tomorrow <span>♡</span></p>
+        <div class="sidebar-footer">Made with ♡ for productivity</div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div class="mobile-brand">
+          <span class="brand-icon">✓</span>
+          <strong>ToDo<span class="brand-purple">List</span></strong>
+        </div>
+        <div class="topbar-spacer"></div>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+          <span class="sun-icon">☀</span>
+          <span class="moon-icon">☾</span>
+        </button>
+        <button class="profile-button" id="profileButton" aria-label="Profile">♟</button>
+      </header>
+
+      <div class="welcome">
+        <h1 id="greeting">Good Evening! 👋</h1>
+        <p id="subtitle">Stay focused. Keep going. You got this!</p>
+      </div>
+
+      <div class="dashboard-grid">
+        <section class="task-section">
+
+          <form class="add-task-box" id="taskForm">
+            <span class="add-symbol">＋</span>
+            <input id="taskInput" type="text" maxlength="120" placeholder="Add a new task..." autocomplete="off" aria-label="New task name" required />
+            <button class="add-button" type="submit">Add</button>
+          </form>
+
+          <div class="task-options">
+            <input type="date" id="taskDate" aria-label="Task due date" />
+            <select id="taskPriority" aria-label="Task priority">
+              <option value="High">High priority</option>
+              <option value="Medium" selected>Medium priority</option>
+              <option value="Low">Low priority</option>
+            </select>
+            <input type="time" id="taskTime" aria-label="Task due time" />
+          </div>
+
+          <div class="task-toolbar">
+            <div class="filter-tabs" role="group" aria-label="Filter tasks">
+              <button class="filter-tab selected" data-filter="all">All <span id="allCount">0</span></button>
+              <button class="filter-tab" data-filter="pending">Pending <span id="pendingCount">0</span></button>
+              <button class="filter-tab" data-filter="completed">Completed <span id="completedCount">0</span></button>
+            </div>
+            <label class="sort-control">
+              <span>Sort by:</span>
+              <select id="sortSelect" aria-label="Sort tasks">
+                <option value="date">Due Date</option>
+                <option value="priority">Priority</option>
+                <option value="newest">Newest</option>
+                <option value="alphabetical">Name</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="view-heading" id="viewHeading">Your Tasks</div>
+          <div class="task-list" id="taskList" aria-live="polite"></div>
+
+          <div class="empty-state hidden" id="emptyState">
+            <div class="empty-icon">✦</div>
+            <h3 id="emptyTitle">Nothing here yet!</h3>
+            <p id="emptyMessage">Add your first task and make today count.</p>
+          </div>
+
+          <div class="list-footer">
+            <span id="footerProgress">Keep going, you're doing great! ✨</span>
+            <button id="clearCompleted" class="clear-button">Clear completed</button>
+          </div>
+        </section>
+
+        <aside class="right-panel">
+          <section class="overview-card">
+            <h2>Task Overview</h2>
+            <div class="stats-grid">
+              <div class="stat-card">
+                <div class="stat-icon stat-purple">▤</div>
+                <div><strong id="totalStat">0</strong><span>Total Tasks</span></div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-icon stat-green">✓</div>
+                <div><strong id="completedStat">0</strong><span>Completed</span></div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-icon stat-orange">◷</div>
+                <div><strong id="pendingStat">0</strong><span>Pending</span></div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-icon stat-red">♨</div>
+                <div><strong id="highStat">0</strong><span>High Priority</span></div>
+              </div>
+            </div>
+            <div class="progress-area">
+              <div class="progress-label"><span>Daily progress</span><strong id="progressPercent">0%</strong></div>
+              <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+            </div>
+          </section>
+
+          <section class="quote-card">
+            <span class="quote-mark">“</span>
+            <p id="quoteText">Better things<br />are coming. Keep going.</p>
+            <span class="quote-heart">♥</span>
+          </section>
+
+          <section class="illustration-card" aria-label="Productivity illustration">
+            <svg viewBox="0 0 360 280" role="img" aria-label="Illustration of a checklist, books, plant and coffee mug">
+              <ellipse cx="180" cy="249" rx="158" ry="15" fill="#e8e0ff"/>
+              <path d="M39 228 Q12 182 43 143 Q64 120 90 151 Q110 174 95 229Z" fill="#eee8ff"/>
+              <path d="M264 231 Q292 190 317 211 Q343 230 322 243Z" fill="#eee8ff"/>
+              <rect x="37" y="217" width="91" height="15" rx="4" fill="#e4a64b"/>
+              <rect x="42" y="203" width="88" height="15" rx="4" fill="#ffffff" stroke="#7565df" stroke-width="2"/>
+              <rect x="49" y="189" width="77" height="14" rx="4" fill="#edc46c"/>
+              <path d="M76 189 L76 158 L55 139" stroke="#8d6648" stroke-width="5" fill="none" stroke-linecap="round"/>
+              <path d="M76 165 Q37 159 34 132 Q64 126 76 165Z" fill="#3a9b88"/>
+              <path d="M76 155 Q76 115 101 104 Q117 136 76 155Z" fill="#218b78"/>
+              <path d="M76 178 Q101 147 121 156 Q112 183 76 178Z" fill="#4ab29c"/>
+              <path d="M76 179 Q54 153 58 138" stroke="#1d786b" stroke-width="3" fill="none"/>
+              <rect x="126" y="83" width="119" height="151" rx="5" fill="#ffffff" stroke="#342578" stroke-width="4"/>
+              <rect x="137" y="94" width="97" height="129" rx="2" fill="#fffefe"/>
+              <text x="144" y="116" font-size="16" font-weight="800" fill="#29215f">To Do:</text>
+              <g stroke="#8d80e9" stroke-width="2" fill="none">
+                <rect x="145" y="130" width="13" height="13" rx="2"/>
+                <rect x="145" y="153" width="13" height="13" rx="2"/>
+                <rect x="145" y="176" width="13" height="13" rx="2"/>
+                <rect x="145" y="199" width="13" height="13" rx="2"/>
+              </g>
+              <path d="M148 135 L152 139 L160 128" stroke="#6754eb" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M168 137 H219 M168 160 H219 M168 183 H219 M168 206 H219" stroke="#ddd7fa" stroke-width="4" stroke-linecap="round"/>
+              <path d="M270 188 L309 188 L303 231 Q290 241 276 231Z" fill="#7562f5" stroke="#3d328f" stroke-width="3"/>
+              <path d="M309 197 Q336 194 326 218 Q320 228 306 219" stroke="#3d328f" stroke-width="5" fill="none"/>
+              <ellipse cx="290" cy="189" rx="19" ry="5" fill="#4535b7"/>
+              <path d="M284 210 Q290 202 296 210 Q297 216 290 221 Q283 216 284 210Z" fill="#e7dfff"/>
+              <path d="M263 100 L271 88 M278 108 L292 105 M260 116 L249 112" stroke="#7c68ed" stroke-width="3" stroke-linecap="round"/>
+              <circle cx="43" cy="91" r="4" fill="#c7b8ff"/>
+              <circle cx="304" cy="139" r="5" fill="#f4d58b"/>
+              <path d="M97 239 Q180 251 259 239" stroke="#c7b9ff" stroke-width="3" fill="none" stroke-linecap="round"/>
+            </svg>
+            <p>One task at a time. <span>You've got this!</span></p>
+          </section>
+        </aside>
+      </div>
+
+      <footer class="page-footer">Made with <span>♥</span> &nbsp; Small steps, big achievements.</footer>
+    </main>
+  </div>
+
+  <div class="toast" id="toast" role="status"></div>
+ <script src="script.js"></script>
+<script src="visualizer.js"></script>
+
+<!-- DSA Visualizer Section -->
+<section id="dsa-visualizer" class="dsa-section">
+    <div class="dsa-header">
+        <p class="dsa-tag">DATA STRUCTURES & ALGORITHMS</p>
+        <h2>DSA Visualizer</h2>
+        <p>Explore how data structures work in our To-Do List.</p>
+    </div>
+
+    <div class="dsa-grid">
+
+        <!-- Linked List -->
+        <article class="dsa-card">
+            <h3>🔗 Singly Linked List</h3>
+            <p>Each node points to the next node.</p>
+            <div class="dsa-visual" id="linkedListVisual">
+                <span class="dsa-node">Task 101</span>
+                <span class="dsa-arrow">→</span>
+                <span class="dsa-node">Task 102</span>
+                <span class="dsa-arrow">→</span>
+                <span class="dsa-null">NULL</span>
+            </div>
+            <button type="button" onclick="showDSAInfo('Linked List')">
+                Learn More
+            </button>
+        </article>
+
+        <!-- Stack -->
+        <article class="dsa-card">
+            <h3>📚 Stack</h3>
+            <p>LIFO: Last In, First Out.</p>
+            <div class="dsa-visual dsa-stack" id="stackVisual">
+                <span class="dsa-node">Task 103</span>
+                <span class="dsa-node">Task 102</span>
+                <span class="dsa-node">Task 101</span>
+            </div>
+            <button type="button" onclick="showDSAInfo('Stack')">
+                Learn More
+            </button>
+        </article>
+
+        <!-- Queue -->
+        <article class="dsa-card">
+            <h3>↔️ Queue</h3>
+            <p>FIFO: First In, First Out.</p>
+            <div class="dsa-visual" id="queueVisual">
+                <span class="dsa-node">101</span>
+                <span class="dsa-arrow">→</span>
+                <span class="dsa-node">102</span>
+                <span class="dsa-arrow">→</span>
+                <span class="dsa-node">103</span>
+            </div>
+            <button type="button" onclick="showDSAInfo('Queue')">
+                Learn More
+            </button>
+        </article>
+
+        <!-- Priority Queue -->
+        <article class="dsa-card">
+            <h3>🏆 Priority Queue</h3>
+            <p>Higher-priority tasks are processed first.</p>
+            <div class="dsa-visual dsa-stack" id="priorityQueueVisual">
+                <span class="dsa-node">Task 102 — High</span>
+                <span class="dsa-node">Task 103 — Medium</span>
+                <span class="dsa-node">Task 101 — Low</span>
+            </div>
+            <button type="button" onclick="showDSAInfo('Priority Queue')">
+                Learn More
+            </button>
+        </article>
+
+    </div>
+
+    <div id="dsaInfo" class="dsa-info" aria-live="polite">
+        Select Learn More to understand a data structure.
+    </div>
+</section>
+
+
+<script src="script.js"></script>
+<script src="visualizer.js"></script>
+</body>
+</html>
+
